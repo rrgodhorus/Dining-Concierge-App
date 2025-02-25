@@ -2,6 +2,8 @@ import json
 import boto3
 from datetime import datetime, UTC
 
+lex_client = boto3.client('lexv2-runtime', region_name='us-east-1')
+
 def create_response_payload(response):
     messages = response.get('messages', [])
     sessionId = response.get('sessionId', '')
@@ -19,18 +21,19 @@ def create_response_payload(response):
 def lambda_handler(event, context):
 
     print(event)
+    sessionId = event.get('sessionId', '123456') # We should get a unique session id from the frontend
+    messages = event['body'].get('messages', [])
+    print(f"{sessionId=}")
 
-    message_to_lex = event['messages'][0]['unstructured']['text']
+    message_to_lex = messages[0]['unstructured']['text']
     print(message_to_lex)
 
-    lex_client = boto3.client('lexv2-runtime', region_name='us-east-1')
-    
     response = lex_client.recognize_text(
-        botId='UYTUKLIOML',       # Replace with your bot's ID
-        botAliasId='TSTALIASID', # Replace with your bot alias ID
-        localeId='en_US',          # Language code (e.g., en_US)
-        sessionId='123456',        # Unique session ID for tracking conversation
-        text=message_to_lex  # User input message
+        botId='UYTUKLIOML',       
+        botAliasId='TSTALIASID', 
+        localeId='en_US',         
+        sessionId=sessionId,        
+        text=message_to_lex  
     )
 
     print(response)
