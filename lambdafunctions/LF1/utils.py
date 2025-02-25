@@ -84,7 +84,7 @@ def initial_message(intent_name):
             'sessionState': {
                 'dialogAction': {
                     'type': 'ElicitSlot',
-                    'slotToElicit': 'Location' if intent_name=='BookHotel' else 'PickUpCity'
+                    'slotToElicit': 'LocationSlot'
                 },
                 'intent': {
                     'confirmationState': 'None',

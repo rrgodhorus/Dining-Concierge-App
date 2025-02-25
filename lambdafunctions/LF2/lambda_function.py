@@ -13,10 +13,12 @@ def lambda_handler(event, context):
         return
 
     for message in messages:
+        print(f"Processing message: {message}")
         recipient_email = message['body']['email']
         cuisine = message['body']['cuisine']
         number_of_people = message['body'].get('number_of_people', "")
-        dining_date = message['body'].get('dining_time', "")
+        dining_date = message['body'].get('dining_date', "")
+        dining_time = message['body'].get('dining_time', "")
         print(f"{recipient_email=} {cuisine=}")
 
         restaurant_ids = get_restaurant_ids_by_cuisine(cuisine)
@@ -24,6 +26,6 @@ def lambda_handler(event, context):
 
         restaurants = fetch_restaurant_data_by_ids(restaurant_ids)
 
-        send_email(recipient_email, restaurants, cuisine, number_of_people, dining_date)
+        send_email(recipient_email, restaurants, cuisine, number_of_people, dining_date, dining_time)
             
         delete_message_from_queue(message['receipt_handle'])
