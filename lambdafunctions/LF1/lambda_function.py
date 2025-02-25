@@ -73,9 +73,8 @@ def isvalid_number_of_people(number_of_people):
         return False
 
 
-
-
 VALID_CUISINES = {"Chinese","Thai","Mexican","Italian","Japanese"}
+VALID_CITIES = {"New York", "NYC", "Manhattan", "Brooklyn", "Queens", "Bronx", "Staten Island"}
 
 def validate_slots(intent_request):
     logger.debug('diningSuggestions intent: validate slots')
@@ -97,9 +96,9 @@ def validate_slots(intent_request):
 
     print(location, cuisine, dining_time, number_of_people, email)
 
-    if not location:
+    if not location or location not in VALID_CITIES:
         error_slot = 'LocationSlot'
-        error_message = 'Please provide a valid city.'
+        error_message = 'Please provide a valid city (We currently support only New York City and its boroughs).'
     
     elif not cuisine or cuisine not in VALID_CUISINES:
         error_slot = 'CuisineSlot'
