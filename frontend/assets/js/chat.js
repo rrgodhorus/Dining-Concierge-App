@@ -104,6 +104,7 @@ $(document).ready(function() {
         Cookies.set('Session-ID', sessionId);
         console.log(`New sessionId: ${sessionId}`);
         insertResponseMessage("Ok! Let's start a new session then. What would you like to do ?");
+        saved_session_data = null;
       }
       return;
     }
