@@ -86,12 +86,12 @@ apigClientFactory.newClient = function (config) {
     apigClient.chatbotPost = function (params, body, additionalParams) {
         if(additionalParams === undefined) { additionalParams = {}; }
         
-        apiGateway.core.utils.assertParametersDefined(params, ['body'], ['body']);
+        apiGateway.core.utils.assertParametersDefined(params, ['body', 'Session-ID'], ['body']);
         
         var chatbotPostRequest = {
             verb: 'post'.toUpperCase(),
             path: pathComponent + uritemplate('/chatbot').expand(apiGateway.core.utils.parseParametersToObject(params, [])),
-            headers: apiGateway.core.utils.parseParametersToObject(params, []),
+            headers: apiGateway.core.utils.parseParametersToObject(params, ['Session-ID']),
             queryParams: apiGateway.core.utils.parseParametersToObject(params, []),
             body: body
         };
@@ -116,6 +116,60 @@ apigClientFactory.newClient = function (config) {
         
         
         return apiGatewayClient.makeRequest(chatbotOptionsRequest, authType, additionalParams, config.apiKey);
+    };
+    
+    
+    apigClient.sessionGet = function (params, body, additionalParams) {
+        if(additionalParams === undefined) { additionalParams = {}; }
+        
+        apiGateway.core.utils.assertParametersDefined(params, ['sessionId'], ['body']);
+        
+        var sessionGetRequest = {
+            verb: 'get'.toUpperCase(),
+            path: pathComponent + uritemplate('/session').expand(apiGateway.core.utils.parseParametersToObject(params, [])),
+            headers: apiGateway.core.utils.parseParametersToObject(params, []),
+            queryParams: apiGateway.core.utils.parseParametersToObject(params, ['sessionId']),
+            body: body
+        };
+        
+        
+        return apiGatewayClient.makeRequest(sessionGetRequest, authType, additionalParams, config.apiKey);
+    };
+    
+    
+    apigClient.sessionPost = function (params, body, additionalParams) {
+        if(additionalParams === undefined) { additionalParams = {}; }
+        
+        apiGateway.core.utils.assertParametersDefined(params, ['body'], ['body']);
+        
+        var sessionPostRequest = {
+            verb: 'post'.toUpperCase(),
+            path: pathComponent + uritemplate('/session').expand(apiGateway.core.utils.parseParametersToObject(params, [])),
+            headers: apiGateway.core.utils.parseParametersToObject(params, []),
+            queryParams: apiGateway.core.utils.parseParametersToObject(params, []),
+            body: body
+        };
+        
+        
+        return apiGatewayClient.makeRequest(sessionPostRequest, authType, additionalParams, config.apiKey);
+    };
+    
+    
+    apigClient.sessionOptions = function (params, body, additionalParams) {
+        if(additionalParams === undefined) { additionalParams = {}; }
+        
+        apiGateway.core.utils.assertParametersDefined(params, [], ['body']);
+        
+        var sessionOptionsRequest = {
+            verb: 'options'.toUpperCase(),
+            path: pathComponent + uritemplate('/session').expand(apiGateway.core.utils.parseParametersToObject(params, [])),
+            headers: apiGateway.core.utils.parseParametersToObject(params, []),
+            queryParams: apiGateway.core.utils.parseParametersToObject(params, []),
+            body: body
+        };
+        
+        
+        return apiGatewayClient.makeRequest(sessionOptionsRequest, authType, additionalParams, config.apiKey);
     };
     
 

@@ -9,6 +9,7 @@ import boto3
 from utils import elicit_slot, confirm_intent, close, delegate, initial_message
 
 from aws_sqs import push_to_queue
+from aws_dynamodb import save_session
 
 logger = logging.getLogger()
 logger.setLevel(logging.DEBUG)
@@ -37,7 +38,6 @@ def try_ex(value):
         return value["value"]["interpretedValue"]
     except:
         return None
-
 
 def isvalid_date(date_str, date_format="%Y-%m-%d"):
     try:
@@ -71,6 +71,7 @@ def isvalid_number_of_people(number_of_people):
             return True
     except ValueError:
         return False
+
 
 
 
@@ -157,6 +158,8 @@ def get_dining_suggestions(intent_request):
     logger.debug('diningSuggestions intent: fullfillment')
 
     slots = intent_request['sessionState']['intent']['slots']
+
+    sessionId = intent_request['sessionId']
     
     location = try_ex(slots['LocationSlot'])
     cuisine = try_ex(slots['CuisineSlot'])
@@ -194,6 +197,9 @@ def get_dining_suggestions(intent_request):
             response = push_to_queue(message_body)
 
             print("SQS response= ",response)
+
+            # Now save this session to the DynamoDB table 
+            save_session(sessionId, message_body)
 
             return close(
                 session_attributes,
