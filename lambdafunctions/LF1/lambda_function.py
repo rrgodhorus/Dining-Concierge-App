@@ -224,12 +224,34 @@ def dispatch(intent_request):
     """
     Called when the user specifies an intent for this bot.
     """
-    logger.debug(intent_request)    
+    logger.debug(intent_request)   
+
+    intent = intent_request['sessionState']['intent'] 
+    session_attributes = intent_request['sessionState'].get("sessionAttributes") or {}
+    active_contexts = {}
     
-    intent_name = intent_request['sessionState']['intent']['name']
+    intent_name = intent['name']
 
     if intent_name == 'DiningSuggestionsIntent':
         return handle_dining_suggestions(intent_request)
+    
+    elif intent_name == 'GreetingIntent':
+        return close(
+                session_attributes,
+                active_contexts,
+                'Fulfilled',
+                intent,
+                'Hello! How can I assist you today?'
+            )
+    
+    elif intent_name == 'ThankYouIntent':
+        return close(
+                session_attributes,
+                active_contexts,
+                'Fulfilled',
+                intent,
+                'You\'re welcome! Let me know if you need anything else.'
+            )
     
 
     return Exception('Intent with name ' + intent_name + ' not supported')
