@@ -3,7 +3,7 @@ import time
 import json
 import os
 
-YELP_API_KEY = "_8HqMkWEY2COSanDLwUZBtM92tMM5XV_p8Mg1bGzXa_Tt86D_hpLIwM5wIQcUvwRAIQspjgbuaNT3vCEYXgfeVY3uZH4zGv4g7wAO4Hj4sGLP_PsQI3XqFDMBsuqZ3Yx"
+YELP_API_KEY = os.environ['YELP_API_KEY']
 API_URL = "https://api.yelp.com/v3/businesses/search"
 HEADERS = {"Authorization": f"Bearer {YELP_API_KEY}", "accept": "application/json"}
 CATEGORIES_OF_INTEREST = ["thai", "japanese", "chinese", "italian", "mexican"]
